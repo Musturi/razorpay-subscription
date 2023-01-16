@@ -29,7 +29,7 @@ public class SubscriptionsController {
 	}
 	
 	@PostMapping("/subscriptions")
-	public String createPlan(@RequestBody SubscriptionInput subscriptionInput) throws JsonProcessingException {
+	public String createSubscription(@RequestBody SubscriptionInput subscriptionInput) throws JsonProcessingException {
 		
 		ObjectMapper objm = new ObjectMapper();
 		String reqBody = objm.writeValueAsString(subscriptionInput);
@@ -38,5 +38,40 @@ public class SubscriptionsController {
 		System.out.println(entity.getBody());
 		
 	    return restTemplate.exchange("https://api.razorpay.com/v1/subscriptions", HttpMethod.POST, entity, String.class).getBody();
+	}
+
+        @GetMapping("/subscriptions/{id}")
+	public String fetchSubscriptionById(@PathVariable("id") String subscriptionId) {
+		HttpEntity<String> entity = basicAuth.enableBasicAuth();
+		System.out.println("subscriptionId: " + subscriptionId);
+		
+		return restTemplate.exchange("https://api.razorpay.com/v1/subscriptions/" + subscriptionId, HttpMethod.GET,
+				entity, String.class).getBody();
+	}
+	
+	@PatchMapping("/subscriptions/{id}")
+	public String updateSubscription(@RequestBody Map<String, String> input, @PathVariable("id") String subscriptionId) throws JsonProcessingException {
+
+		ObjectMapper objm = new ObjectMapper();
+		String reqBody = objm.writeValueAsString(input);
+
+		HttpEntity<String> entity = basicAuth.enableBasicAuth(reqBody);
+		System.out.println(entity.getBody());
+
+		return restTemplate.exchange("https://api.razorpay.com/v1/subscriptions/" + subscriptionId, HttpMethod.PATCH, entity, String.class)
+				.getBody();
+	}
+	
+	@PostMapping("/subscriptions/{id}/cancel")
+	public String cancelSubscription(@RequestBody Map<String, String> input, @PathVariable("id") String subscriptionId) throws JsonProcessingException {
+
+		ObjectMapper objm = new ObjectMapper();
+		String reqBody = objm.writeValueAsString(input);
+
+		HttpEntity<String> entity = basicAuth.enableBasicAuth(reqBody);
+		System.out.println(entity.getBody());
+
+		return restTemplate.exchange("https://api.razorpay.com/v1/subscriptions/" + subscriptionId + "/cancel", HttpMethod.POST, entity, String.class)
+				.getBody();
 	}
 }
