@@ -1,4 +1,4 @@
-package com.lybl.razorpay.subscription;
+package com.lybl.razorpay.subscription.util;
 
 import java.util.Arrays;
 

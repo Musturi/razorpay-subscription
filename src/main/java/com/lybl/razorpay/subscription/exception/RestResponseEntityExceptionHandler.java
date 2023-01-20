@@ -1,4 +1,4 @@
-package com.lybl.razorpay.subscription;
+package com.lybl.razorpay.subscription.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
